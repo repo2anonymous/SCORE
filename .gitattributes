@@ -1,0 +1,4 @@
+datasets/lcb_v6/*.json filter=lfs diff=lfs merge=lfs -text
+datasets/lcb_v6/*.parquet filter=lfs diff=lfs merge=lfs -text
+datasets/lcb_v6/train.json filter=lfs diff=lfs merge=lfs -text
+datasets/lcb_v6/test.json filter=lfs diff=lfs merge=lfs -text

@@ -1,0 +1,49 @@
+defaults:
+  - ppo_trainer
+  - user
+  - _self_
+
+max_model_len: 18944
+
+actor_rollout_ref:
+  actor:
+    ppo_mini_batch_size: 32
+    policy_loss:
+      loss_mode: score
+    self_distillation:
+      max_reprompt_len: 10240
+      is_clip: 2.0
+      distillation_topk: 512
+      tpdd_beta: 1.0
+      tpdd_gamma: 1.0
+      enriched_reprompt_template: |-
+        {prompt}
+
+        ## Your Previous Attempt (INCORRECT — {error_type})
+        ```python
+        {student_code}
+        ```
+        {feedback}
+        {solution}
+
+        ## Task
+        Compare the incorrect attempt above with the correct solution. Identify the specific bug, then write a corrected version.
+
+    optim:
+      lr: 1e-5
+  rollout:
+    n: 8
+    calculate_log_probs: True
+
+algorithm:
+  adv_estimator: grpo
+  norm_adv_by_std_in_grpo: False
+  rollout_correction:
+    rollout_is: token
+    rollout_is_threshold: 2.0
+
+data:
+  train_batch_size: 32
+
+trainer:
+  val_before_train: False
